@@ -1,0 +1,3 @@
+;; Notkun: (penultimate x)
+;; Fyrir: x=(x1 x1 ... xN-1 xN) er listi
+;;        x verður að innihalda a.m.k tvö stök.

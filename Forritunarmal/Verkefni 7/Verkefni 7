@@ -1,0 +1,28 @@
+rec fun reverse(x){
+	var y=[];
+	while(x){
+		y= head(x):y;
+		x = tail(x);
+	};
+	y;
+};
+
+rec fun filter(p, x) { 
+	var nyrListi = [];
+	forAll (var a)
+	inList (x)
+	do
+	{
+		if(p(a)==true)
+		{	
+			nyrListi = a:nyrListi;
+		}
+	};
+	writeln(reverse(nyrListi));
+};	
+
+filter(fun(x){x%2==0},[1,2,3,4,5,6])
+[2,4,6]
+
+
+

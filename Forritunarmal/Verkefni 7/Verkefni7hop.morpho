@@ -1,0 +1,185 @@
+;;; Notkun: z = reverse(x)
+;;; Fyrir:  x er listi [x1,...,xN]
+;;; Eftir:  z er nýr listi [xN,...,x1]
+rec fun reverse(x){
+	var y=[];
+	while(x){
+		y= head(x):y;
+		x = tail(x);
+	};
+	y;
+};
+
+
+rec fun take(n,s){
+	if(n==0){
+		return []
+	};
+	return streamHead(s) : take(n-1, streamTail(s));
+};
+
+;;; Notkun: z = filter(p, x)
+;;; Fyrir:  p er fall
+;;; 	    x er listi, x=[x1,...,xn]
+;;; Eftir:  Listi þeirra gilda xi í x þannig að  
+;;;         p(xi) skilar "satt", þ.e. þannig að skilagildið
+;;;         er hvorki null eða false. 
+;;; Aths:   Sem dæmi ætti filter(fun(x){x%2==0},[1,2,3,4,5])
+;;; 		að skila listanum [2,4]. 
+rec fun filter(p, x) {
+	;;; Notkun: z = reverse(x)
+	;;; Fyrir:  x er listi [x1,...,xN]
+	;;; Eftir:  z er nýr listi [xN,...,x1]
+	rec fun reverse(x){
+		var y=[];
+		while(x){
+			y= head(x):y;
+			x = tail(x);
+		};
+		y;
+	};
+	var nyrListi = [];
+	forAll (var a)
+	inList (x)
+	do
+	{
+		if(p(a)==true)
+		{	
+			nyrListi = a:nyrListi;
+		}
+	};
+	writeln(reverse(nyrListi));
+};	
+
+filter(fun(x){x%2==0},[1,2,3,4,5])
+[2,4]
+
+
+
+
+;;; Notkun: z = filterStream(p, x)
+;;; Fyrir:  p er fall
+;;; 	    x er straumur, x=#[x1,...]
+;;; Eftir:  Straumur þeirra gilda xi í x þannig að 
+;;;         p(xi) skilar "satt", þ.e. þannig að skilagildið
+;;;         er hvorki null eða false. 
+rec fun filterStream(p, x){
+		if(x==null){
+			x;
+		};
+		if(p(streamHead(x))==true){
+			#[(streamHead(x))$(filterStream(p,(streamTail(x))))];
+		}
+		else{
+			filterStream(p,streamTail(x));
+		};
+};
+rec fun sb(f,x,y){
+	#[f(streamHead(x), streamHead(y))$sb(f,streamTail(x),streamTail(y))]
+};
+rec val einn = #[1$einn];
+rec var heil = #[1$sb(fun(a,b){a+b},heil,einn)];
+
+writeln(take(20, filterStream(fun(x){x%2==0},heil)));
+[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40]
+
+
+
+
+writeln(take(4, filterStream(fun(x){x%2==0},#[1,2,3,4,5,6,7,8,9,10,11])));
+rec var z = filterStream(fun(x){x%2==0},#[1,2,3,4,5,6,7,8,9,10,11];
+
+
+
+
+rec fun filterStream4(p,x){
+		if(x==null){
+			x;
+		}
+		else{
+			filterStream4(p,streamTail(x));
+		};
+
+};
+
+
+rec var z = filterStream4(fun(x){x%2==0},#[1,2,3,4,5,6,7,8,9,10,11])
+
+
+
+writeln(take(2,filterStream4(fun(x){x%2==0},#[1,2,3,4,5,6,7,8,9,10,11])));
+
+
+
+take(2,filterStream3(fun(x){x%2==0},#[1,2,3,4,5,6,7,8,9,10,11]));
+
+
+rec fun filterStream5(p, x){
+	rec var nyrStraumur = #[100,300];
+	rec val current = force(tail(tail(nyrStraumur)));
+	forAll (var a)
+	inStream (x)
+	do
+	{
+		if(p(a)==true)
+		{
+			setHead(current, a);
+			setTail(current, current);
+		}
+	};
+	writeln(nyrStraumur);
+};
+
+
+
+
+	
+rec var z = filterStream5(fun(x){x%2==0},#[1,2,3,4,5,6,7,8])
+
+
+
+
+writeln(take(3,z));
+
+
+
+
+rec fun filterStream2(p, x){
+	rec fun hjalp(y){
+		writeln(y);
+		if(y==null){
+			#[];
+		};
+		if(p(head(y))==true){
+			writeln("er her");
+			#[head(y)$(hjalp(tail(y)))];
+		}
+		else{
+			hjalp(tail(y));
+		};		
+	};
+	hjalp(x);
+};
+
+	
+rec var z = filterStream2(fun(x){x%2==0},#[1,2,3,4,5,6,7,8,9,10,11])
+	
+
+
+
+
+
+
+
+
+
+
+
+
+while(z!=null){
+	writeln(head(z));
+	z = tail(z);
+};
+
+
+

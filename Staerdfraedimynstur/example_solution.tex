@@ -1,0 +1,172 @@
+\documentclass{article}
+
+% Neðangreindar þrjá línur eru nauðsynlegar fyrir íslensku, t.d. til að geta skrifað Þ og Æ.
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\title{Dæmi um það hvernig skila á heimadæmum}
+\author{Nafn nemanda og HÍ netfang}
+
+% pakki fyrir heimildavinnu (þarf yfirleitt ekki fyrir heimadæmi)
+\usepackage{natbib}
+
+% graphicx er pakki sem er m.a. notaður fyrir myndir
+\usepackage{graphicx}
+
+% Booktabs er pakki sem gerir töflur snyrtilegri
+\usepackage{booktabs}
+
+% Pakki sem gerir okkur kleyft að nota align umhverfið
+\usepackage{amsmath}
+
+\begin{document}
+
+\maketitle
+
+Þetta eru lausnirnar fyrir fyrstu skiladæmin árið 2019. Þegar þið skilið dæmunum þarf ekki að skrifa niður lýsinguna á dæminu áður en lausnin er skrifuð eins og við gerum hér.
+
+\section*{Dæmi 1}
+Ritið eftirfarandi setningar á forminu „ef $p$ þá $q$“ á íslensku.
+\begin{enumerate}
+    \item Til að slá í gegn á YouTube er nægjanlegt að vera heimsfrægur.
+    \item Þú getur skilað fötunum aðeins ef þú keyptir þau nýlega.
+\end{enumerate}
+
+\section*{Lausn á dæmi 1}
+\begin{enumerate}
+    \item „Ef þú ert heimsfrægur þá slærðu í gegn á YouTube.“
+    \item „Ef þú getur skilað fötunum þá keyptir þú þau nýlega.“
+\end{enumerate}
+
+\section*{Dæmi 2}
+Eftirfarandi kerfislýsing er gefin: "If the file system is not locked, then new messages will be queued. If the file system is not locked, then the system is functioning normally, and conversely. If new messages are not queued, then they will be sent to the message buffer. If the file system is not locked, then new messages will be sent to the message buffer. New messages will not be sent to the message buffer."
+
+Setjið kerfislýsinguna fram með táknmáli rökfræðinnar, þ.e. með yrðingum og rökvirkjum. Ákvarðið því næst hvort kerfislýsingin sé samkvæm, þ.e.\ hvort hægt sé að uppfylla allar kröfur samtímis.
+
+\section*{Lausn á dæmi 2}
+Látum $L, Q, N, B$ tákna
+\begin{description}
+    \item[$L$:] The file system is locked.
+    \item[$Q$:] New messages will be queued.
+    \item[$N$:] System is functioning normally.
+    \item[$B$:] New messages will be sent to the message buffer.
+\end{description}
+Með þessum skilgreiningum getum við þá sett kröfurnar fram sem eftirfarandi fimm yrðingar.
+\begin{enumerate}
+    \item $\neg L\to Q$.
+    \item $\neg L\leftrightarrow N$.
+    \item $\neg Q\to B$.
+    \item $\neg L \to B$.
+    \item $\neg B$.
+\end{enumerate}
+
+Kerfislýsingin er samkvæm ef til eru sanngildi á $L$, $Q$, $N$ og $B$ þannig að hægt sé að uppfylla kröfur 1-5, þ.e.\ yrðingarnar séu sannar samtímis.
+
+Dæmið má leysa með sanntöflu sem hefur 5 raðir. Einnig er hægt að áætla sanngildi yrðinganna út frá kröfunum. Skv. kröfu fimm verðum við að hafa $B=0$ og þar af leiðandi má áætla út frá kröfu 3 að $L=1$ (mótskilyrðing). Krafa 2 gefur okkur þá að $N=0$. Kröfur 5 og 3 gefa okkur þá að $Q=1$ (mótskilyrðing). Með því að stinga þessum gildum inn í kröfurnar fáum við að þær eru allar sannar og því er kerfislýsingin samkvæm.
+
+\section*{Dæmi 3}
+Sýnið að yrðingarnar $\neg(p \lor (\neg p\land q))$ og $\neg (p\lor q)$ séu jafngildar með því að nota sanntöflu.
+
+\section*{Lausn á dæmi 3}
+Sjá töflu.
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}cccccccc@{}}
+\toprule
+$p$ & $q$ & $\neg q$ & $(\neg p\land q)$ & $(p\lor(\neg p\land q))$ & $\neg(p\lor(\neg p\land q))$ & $p\lor q$ & $\neg(p\lor q)$ \\ \midrule
+0 & 0 & 1 & 0 & 0 & 1 & 0 & 1 \\
+0 & 1 & 1 & 1 & 1 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 & 1 & 0 & 1 & 0 \\
+1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 \\ \bottomrule
+\end{tabular}%
+}
+\caption{Sanntafla sem sýnir jafngildi yrðinganna $\neg(p \lor (\neg p\land q))$ og $\neg (p\lor q)$.}
+\label{tab:d3}
+\end{table}
+
+\section*{Dæmi 4}
+Sýnið að yrðingarnar $\neg(p \lor (\neg p\land q))$ og $\neg (p\lor q)$ séu jafngildar með því að nota þekkt jafngildi.
+
+\section*{Lausn á dæmi 4}
+Með því að nota þekkt jafngildi fáum við
+\begin{align*}
+    \neg(p \lor (\neg p\land q)) &\equiv \neg p \lor \neg(\neg p\land q) & (\text{Regla DeMorgan})\\
+    &\equiv \neg p \lor (\neg\neg p\lor \neg q) & (\text{Regla DeMorgan})\\
+    &\equiv \neg p \lor (p\lor \neg q) & (\text{Regla um tvöfalda neitun})\\
+    &\equiv (\neg p\land \neg q) \lor (\neg p\land \neg q) & (\text{Dreifiregla})\\
+    &\equiv F \lor (\neg p\land \neg q) & (\text{Regla um eiginleika neitunar})\\
+    &\equiv \neg p\land \neg q & (\text{Regla um hlutleysu})\\
+    &\equiv \neg (p\lor q) & (\text{Regla DeMorgan})\text{.}
+\end{align*}
+
+\section*{Dæmi 5}
+Umritið eftirfarandi fullyrðingu: \emph{Nauðsynlegt skilyrði fyrir því að keppa á Ólympíuleikunum er að íþróttamaður nái lágmarki í sinni grein} sem umsagnarsegð með óðalinu „íþróttamenn“ og viðeigandi umsögnum. Ritið síðan neitun þessarar fullyrðingar sem umsagnarsegð þannig að komi fyrir neitunarvirki í segðinni standi hann strax fyrir framan viðkomandi umsögn. Hvernig verður slík neitun á mæltu máli?
+
+\section*{Lausn á dæmi 5}
+Látum
+\begin{align*}
+    O(x):&\; \text{„$x$ keppir á Ólympíuleikunum“}\\
+    L(x):&\; \text{„$x$ nær lágmarki í sinni grein“.}
+\end{align*}
+Umsagnarsegðina má þá rita sem
+\[
+\forall x(O(x)\to L(x))\text{.}
+\]
+Neitunina má svo rita með eftirfarandi hætti
+\begin{align*}
+    \neg \forall x(O(x)\to L(x)) &\equiv \exists x \neg (O(x)\to L(x)) & (\text{Neitun almagnara})\\
+    &\equiv \exists x(O(x)\land \neg L(x)) & (\text{Regla DeMorgan})\text{.}
+\end{align*}
+Á mæltu máltu máli má því segja: \emph{Til er íþróttamaður sem keppir á Ólympíuleikunum sem hefur ekki náð lágmarki í sinni grein}.
+
+
+\section*{Dæmi 6}
+Umritið eftirfarandi fullyrðingu: \emph{Hundar sem gelta bíta ekki} sem umsagnarsegð með óðalinu „öll dýr“ og viðeigandi umsögnum. Ritið síðan neitun þessarar fullyrðingar sem umsagnarsegð þannig að komi fyrir neitunarvirki í segðinni þá standi hann strax fyrir framan viðkomandi umsögn.
+
+\section*{Lausn á dæmi 6}
+Látum
+\begin{align*}
+H(x): &\; \text{$x$ er hundur}\\
+G(x): &\; \text{$x$ geltir}\\
+B(x): &\; \text{$x$ bítur.}
+\end{align*}
+Umsagnarsegðin er þá
+\[
+\forall x((H(x)\land G(x))\to \neg B(x))\text{.}
+\]
+Neitun segðarinnar er þá
+\begin{align*}
+    \neg \forall x((H(x)\land G(x))\to \neg B(x)) &\equiv \exists x \neg((H(x)\land G(x))\to \neg B(x)) & (\text{Neitun almagnara})\\
+    &\equiv \exists x ((H(x)\land G(x))\land \neg\neg B(x)) & (\text{Neitun leiðingar})\\
+    &\equiv \exists x (H(x)\land G(x)\land B(x)) & (\text{Regla um tvöfalda neitun})\text{.}
+\end{align*}
+
+\section*{Lausn á dæmi 7}
+Umritið eftirfarandi fullyrðingu „\emph{Öllum sem heimsækja London líkar við borgina}“ sem umsagnarsegð með óðalinu „menn og borgir“ og viðeigandi umsögnum. Ritið síðan neitun þessarar fullyrðingar sem umsagnarsegð þannig að komi fyrir neitunarvirki í segðinni þá standi hann strax fyrir framan viðkomandi umsögn.
+
+
+\section*{Lausn á dæmi 7}
+Látum
+\begin{align*}
+M(x): &\; \text{$x$ er maður}\\
+F(x,y): &\; \text{$x$ fer til $y$}\\
+L(x,y): &\; \text{$x$ líkar við $y$.}
+\end{align*}
+Umsagnarsegðin er þá
+\[
+\forall x(M(x)\land F(x,\text{London})\to L(x,\text{London}))\text{.}
+\]
+Neitunin fæst á svipaðan hátt og dæminu hér á undan. Hún verður
+\[
+\neg \forall x(M(x)\land F(x,\text{London})\to L(x,\text{London})) \equiv \exists x(M(x)\land F(x,\text{London})\land \neg L(x,\text{London}))\text{.}
+\]
+
+\noindent \textbf{Önnur lausn:} Í ljósi þess að óðalið er „menn og borgir“ er einnig hægt að bæta við yrðingunni $B(x)=\text{$x$ er London}$ og setja yrðinguna fram sem
+\[
+\forall x\forall y(M(x)\land B(y)\land F(x,y)\to L(x,y))\text{.}
+\]
+Neitunin á yrðingunni fæst með svipuðum hætti og í dæmi 6.
+
+\end{document}

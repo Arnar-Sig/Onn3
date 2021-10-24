@@ -1,0 +1,109 @@
+rec fun reverse(x){
+	var y=[];
+	while(x){
+		y= head(x):y;
+		x = tail(x);
+	};
+	y;
+};
+
+
+
+rec fun powerList3(n){
+	rec fun hjalp(i, x){
+		if(i==n){
+			[];
+		}
+		else{
+			writeln("inni i else hluta");
+			writeln([i]:powerList3(i));
+			hjalp((i+1),(append([i],powerList3(i))));	
+		};
+	};
+	hjalp(0,[]);
+};
+
+
+powerList3(2);
+
+
+rec fun powerList2(n){
+	rec fun hjalp(i, x){
+		if(i>n){
+			writeln("Error, i>n");
+			x;
+		};
+		if(i==n){
+			x;
+		}
+		else{
+			writeln("her");
+			return  append(x, hjalp(i+1,x));
+		};
+	};
+	hjalp(0,[]);
+};
+
+
+
+writeln(powerList2(2));
+
+
+
+
+;;; Notkun: z = powerList(n)
+;;; Fyrir:  n er heiltala?0
+;;; Eftir: Listi af listum heiltanla sem inniheldur alla 
+;;;	 	   mögulega lista heiltalnasem eru undirlistar listans 
+;;; 	   x = [n,n-1,...,2,1] í þeim skilningi að
+;;;	   	   undirlistarnir innihalda gildi úr listanum x
+;;;        í sömu röð og í x, nema hvað fjarlægja má núll 
+;;;        eða fleiri gildi úr listanum x.
+
+rec fun powerList(n){
+	rec fun hjalp(i){
+		if(i>n){
+			[[]];
+		}
+		else{
+			append(hjalp(i+1),(map (fun (z) {i:z}, (hjalp(i+1)))))
+		};
+	};
+	hjalp(1);
+};
+
+
+z = powerList(2);
+writeln(z);
+
+[null,[2],[1],[1,2]]
+
+
+
+
+;;; Notkun: z = zipWith(f, x, y)
+;;; Fyrir:  f er fall(lokun), x = [x1,...,xn] og 
+;;; 	    y = [y1,...,yn] eru jafnlangir listar
+;;; Eftir:  Listi [f(x1,y1),...,f(xn,yn)] eða listi 
+;;;         af útkomum þar sem falli er beitt á stak
+;;;         úr x og y sem hafa sama vísi(index), sem dæmi 
+;;;         f(x1,y1) og f(x4, y4).
+
+rec fun zipWith(f, x, y){
+	var nyrListi = [];
+	var i = 0;
+	while(x!=null && i<100){
+		i = i + 1;
+		nyrListi = f(head(x),head(y)):nyrListi;
+		x = tail(x);
+		y = tail(y);
+	};
+	return reverse(nyrListi);
+};
+
+var z = zipWith(fun(x,y){x+y},[1,2,3],[4,5,6]);
+writeln(z);
+
+[5,7,9]
+
+
