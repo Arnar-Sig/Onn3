@@ -1,0 +1,106 @@
+;;; Beinagrind fyrir forritunina í hópverkefni 10.
+
+
+"priq.mmod" =
+{{
+
+{;;;
+Fastayrðing gagna:
+==================
+
+???
+
+;;;}
+
+
+make =
+	fun()
+	{
+		???
+	};
+
+remove =
+	fun(pq)
+	{
+		???
+	};
+
+add =
+	fun(pq,k,v)
+	{
+		???
+	};
+
+isEmpty =
+	fun(pq)
+	{
+		???
+	};
+}}
+*
+"insert.mmod"
+*
+{{
+<<== =
+	fun(x,y)
+	{
+		??? hér er væntanlega kallað á <<< ???
+	};
+}}
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Prófunarforrit
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;; Prófun með heiltölum sem skrifar tölurnar í vaxandi röð.
+
+"priqtest1.mexe" = main in
+{{
+main =
+	fun()
+	{
+		val pq = ???;
+		var list = [1,9,2,8,3,7,4,7,5,6,6];
+		while( ??? )
+		{
+			;;; pq er forgangsbiðröð sem inniheldur núll eða
+			;;; fleiri af þeim gildum sem breytan list innihélt
+			;;; upphaflega. Restin er enn í list.
+			???
+		};
+		;;; Breytan list er nú [] og pq
+		;;; inniheldur gildin 1,9,2,8,3,7,4,7,5,6,6
+		while( ??? )
+		{
+			;;; Núll eða fleiri fremstu gildi úr pq hafa verið
+			;;; skrifuð í forgangsröð. Hin eru enn í pq.
+			???
+		};
+		;;; pq er nú tóm og búið er að skrifa allar tölurnar
+	};
+}}
+*
+"priq.mmod"
+*
+{{
+<<< = fun <(x,y);
+}}
+*
+BASIS
+;
+
+;;; Prófun með heiltölum sem skrifar tölurnar í minnkandi röð.
+
+"priqtest2.mexe" = main in
+{{
+main =
+	fun()
+	{
+		???
+	};
+}}
+*
+???
+;
