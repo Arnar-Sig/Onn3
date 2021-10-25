@@ -1,0 +1,127 @@
+﻿removeFromPqueue =
+	fun(q)
+	{
+		var temp = *q;
+		var min = tail(head(*q));
+		var lastPair = temp;
+		var hoppTil;
+		var hoppFra;
+		var skilagildi;
+		while(tail(temp) != null){
+			if(min>(tail(head(temp)))){
+				min = tail(head(temp));
+				skilagildi = head(head(temp)) : tail(head(temp));
+				hoppTil = head(tail(tail(temp)));
+				hoppFra = lastPair;
+			};
+			lastPair = temp;
+			temp = tail(temp);
+		};
+
+		if(tail(*q)==null){
+			*q = [];
+			min;
+		};		
+	};
+}};
+
+
+
+
+
+BETRA:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+emoveFromPqueue =
+	fun(q)
+	{
+		var temp = *q;
+		var min = tail(head(temp));
+		var skilagildi = head(head(temp)) : tail(head(temp));
+		while(temp!=null){
+			if(tail(head(temp)) < min){
+				min = tail(head(temp));
+				skilagildi = head(temp);
+			};
+			temp = tail(temp);
+		};
+		;;; VIRÐIST FINNA RÉTT MIN og SKILAGILDI
+		temp = *q;
+		var nyrListi = [];
+		while(skilagildi != head(head(temp)) : tail(head(temp))){
+			var stak = head(head(temp)) : tail(head(temp));
+			stak : nyrListi;
+			temp = tail(temp);
+		};
+		temp = tail(temp); ;;; hoppa yfir skilagildi
+		while(temp != null){
+			var stak = head(head(temp)) : tail(head(temp));
+			stak : nyrListi;
+			temp = tail(temp);
+		};
+		nyrListi;
+		
+
+		
+
+		
+	};
+
+
+
+GAMLA TESTIÐ SEM VIRKAÐI?
+
+		var b = makePqueue();
+		var e = isEmpty(b);
+		write("is empty: "); writeln(e);
+		writeln("adding element 'a' and key 1 to queue.");
+		addToPqueue(b,"a", 1);
+		var tomt = isEmpty(b);
+		write("is empty: "); writeln(tomt);
+
+		writeln("adding 'b':2 , 'c':3, 'd':4 to queue");
+		addToPqueue(b,"b", 2);
+		addToPqueue(b,"c", 3);
+		addToPqueue(b,"d", 4);
+
+		var min = removeFromPqueue(b);
+		writeln(min);
+		writeln(*b);
+		

@@ -1,0 +1,21 @@
+"fibo.mexe" = main in
+{{
+main =
+	fun()
+	{
+		writeln(fibo(int(getArgs()[1])));
+	};
+}}
+*
+!
+{{
+fibo =
+	fun(n)
+	{
+		if( n < 2 ) { return 1 };
+		fibo(n-1)+fibo(n-2);
+	};
+}}
+* 
+BASIS
+;

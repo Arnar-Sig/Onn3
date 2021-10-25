@@ -1,0 +1,68 @@
+
+
+;;;----------------- FIKT ---------------
+
+
+
+
+var listi = [];
+var bendir = listi;
+var a = "a":1;
+var b = "b":2;
+var c = "c":3;
+bendir = b:bendir;
+bendir = c:bendir;
+bendir = a:bendir;
+writeln(bendir);
+
+listi = a:listi;
+listi = b:listi;
+listi = c:listi;
+
+
+
+writeln(listi);
+
+writeln(head(listi));
+
+writeln(head(head(listi)));
+
+
+var q = [];
+var a = "a":1;
+var b = "b":2;
+var c = "c":3;
+q = a:q;
+q = b:q;
+q = c:q;
+writeln(q);
+
+
+
+var temp = q;
+var min = tail(head(q));
+writeln(min);
+writeln(tail(temp));
+
+while(tail(temp) != null){
+	if(min>(tail(head(temp)))){
+		min = tail(head(temp));
+	};
+	temp = tail(temp);
+};
+if(tail(q)==null){
+	q = [];
+	min;
+};
+
+	
+while(min != tail(tail(q))){
+	q = tail(q);
+};
+var skilagildi = tail(q);
+var hopp = tail(q);
+hopp = tail(q);
+setTail(q, hopp);
+		
+
+
