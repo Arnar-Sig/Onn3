@@ -1,0 +1,101 @@
+{;;;
+
+Hönnunarskjal fyrir IntBag einingu sem gefur 
+okkur kost á að vinna með poka heiltalna.
+
+Útflutt úr einingunni
+=====================
+
+Notkun: b = makeIntBag();
+Fyrir:  Ekkert.
+Eftir:  b inniheldur nýjan tóman poka heiltalna.
+
+Notkun: addToIntBag(b,x);
+Fyrir:  b er poki heiltalna (fenginn úr makeIntBag).
+        x er heiltala.
+Eftir:  heiltölunni x hefur verið bætt í pokann b.
+
+Notkun: e = isEmptyIntBag(b);
+Fyrir:  b er poki heiltalna.
+Eftir:  e er satt þþaa b sé tómur.
+
+Notkun: x = removeFromIntBag(b);
+Fyrir:  b er poki heiltalna, ekki tómur.
+Eftir:  Búið er að fjarlægja einhverja eina tölu
+        úr b og x inniheldur þá tölu.
+
+;;;}
+
+"IntBag.mmod" =
+{{
+
+;;; Fastayrðing gagna:
+;;;   Poki heiltalna sem inniheldur tölurnar
+;;;   x1,x2,...,xN er táknaður sem bendir á
+;;;   falda breytu x þar sem x inniheldur
+;;;   listann [x1,x2,...,xN], eða lista sömu
+;;;   talna í annarri röð.
+
+makeIntBag =
+	fun()
+	{
+		var x=[];
+		&x
+	};
+	
+addToIntBag =
+	fun(b,x)
+	{
+		*b = x : *b;
+	};
+
+isEmptyIntBag =
+	fun(b)
+	{
+		! *b
+	};
+
+removeFromIntBag =
+	fun(b)
+	{
+		val x = head(*b);
+		*b = tail(*b);
+		x
+	};
+}};
+
+"testIntBag.mexe" = main in
+{{
+;;; Notkun: main();
+;;; Fyrir:  Ekkert.
+;;; Eftir:  Búið er að skrifa heiltölurnar 1 til 9 tvisvar
+;;;         sinnum á úttakið í einhverri röð, eina í hverri
+;;;         línu.
+main =
+	fun()
+	{
+		val l = [1,9,2,8,3,7,4,6,5,1,9,2,8,3,7,4,6,5];
+		var t = l;
+		val b = makeIntBag();
+		while( t )
+		{
+			;;; Sammengi (sampoki) talnanna í listanum t og 
+			;;; pokanum b er nákvæmlega sama og innihaldið í
+			;;; listanum l.
+			addToIntBag(b,head(t));
+			t = tail(t);
+		};
+		while( !isEmptyIntBag(b) )
+		{
+			;;; Sammengi skrifuðu talnanna og talnanna í b er
+			;;; nákvæmlega sama og innihaldið í listanum l.
+			val x = removeFromIntBag(b);
+			writeln(x);
+		};
+	};
+}}
+*
+"IntBag.mmod"
+*
+BASIS
+;

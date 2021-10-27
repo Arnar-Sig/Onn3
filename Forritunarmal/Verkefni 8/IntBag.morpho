@@ -34,7 +34,8 @@ Eftir:  Búið er að fjarlægja einhverja eina tölu
 ;;;   x1,x2,...,xN er táknaður sem bendir á
 ;;;   falda breytu x þar sem x inniheldur
 ;;;   listann [x1,x2,...,xN], eða lista sömu
-;;;   talna í annarri r
+;;;   talna í annarri röð.
+
 makeIntBag =
 	fun()
 	{

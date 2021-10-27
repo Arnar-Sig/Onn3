@@ -1,0 +1,126 @@
+{;;;
+
+Hönnunarskjal fyrir stack einingu sem gefur 
+okkur kost á að vinna með hlaða
+
+Útflutt úr einingunni
+=====================
+
+Notkun: s = makeStack();
+Fyrir:  Ekkert.
+Eftir:  s inniheldur tóman hlaða af ótakmarkaðri stærð.
+
+Notkun: push(s,x);
+Fyrir:  s er hlaði (fengin úr makePqueue).
+		x er gildið sem á að setja á hlaða.
+Eftir:  heiltölunni x hefur verið bætt við hlaðann s.
+
+Notkun: e = isEmpty(s);
+Fyrir:  s er hlaði.
+Eftir:  e er satt þþaa s sé tóm.
+
+Notkun: e = pop(s);
+Fyrir:  s er hlaði, ekki tómur.
+Eftir:  Búið er að fjarlægja stak úr hlaða s.
+		e er stakið sem var fjarlægt..
+
+
+;;;}
+
+
+"stack.mmod" =
+{{
+
+;;; Fastayrðing gagna:
+;;;   Poki af gildum xN,...,x1 sem myndar eins konar stafla
+;;;   þar sem gildi xN er "ofan á" gildi xN-1 sem er "ofan á"
+;;;   gildi xN-2 osfv. Til að geta nálgast gildi sem er inni í
+;;;   staflanum þarf að taka ofan af honum eitt gildi í einu
+;;;   þar til gildið sem verið er að ná í er efst á stafla.
+;;;   Pokinn er táknaður sem bendir á falda breytu sem er
+;;;   listi af gildum [xN,...x1] þannig að þegar bætt er gildi á
+;;;   stafla er því gildi bætt við framan á listann og þegar ná á
+;;;   í gildi af staflanum er fremsta staki í listanum skilað og 
+;;;   það gildi tekið framan af listanum.
+
+
+
+makeStack =
+	fun()
+	{
+		var x = [];
+		&x;
+	};
+	
+push =
+	fun(s, x)
+	{
+		*s = x : *s;
+	};
+
+isEmpty =
+	fun(s)
+	{
+		! *s
+	};
+
+pop =
+	fun(s)
+	{
+		var skilagildi = head(*s);
+		var nyrListi = tail(*s);
+		*s = nyrListi;
+		return skilagildi;
+	};
+}}
+;
+
+
+
+"teststack.mexe" = main in
+{{
+;;; Notkun: main();
+;;; Fyrir:  Ekkert.
+;;; Eftir:  
+;;;         
+;;;         
+main =
+	fun()
+	{
+		writeln("Creating stack");
+		var stack = makeStack();
+		write("isEmpty(): "); writeln(isEmpty(stack));
+		push(stack, 1);
+		push(stack, 2);
+		push(stack, 3);
+		push(stack, 4);
+		push(stack, 5);
+		push(stack, 6);
+		writeln("pushed numbers 1-6 on stack");
+		write("isEmpty(): "); writeln(isEmpty(stack));
+
+		write("current stack: "); writeln(*stack);
+		writeln("popping!");
+		var ut = pop(stack);
+		write("result from pop: "); writeln(ut);
+		write("current stack: "); writeln(*stack);
+		writeln("popping!");
+		ut = pop(stack);
+		write("result from pop: "); writeln(ut);
+		write("current stack: "); writeln(*stack);
+
+
+	};
+}}
+*
+"stack.mmod"
+*
+BASIS
+;
+
+
+
+
+
+
+

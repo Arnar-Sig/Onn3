@@ -1,34 +1,31 @@
 {;;;
 
-HÃ¶nnunarskjal fyrir Pqueue einingu sem gefur 
-okkur kost Ã¡ aÃ° vinna meÃ° fjÃ¶lnota forgangsbiÃ°rÃ¶Ã°.
+Hönnunarskjal fyrir Pqueue einingu sem gefur 
+okkur kost á ağ vinna meğ fjölnota forgangsbiğröğ.
 
-Ãštflutt Ãºr einingunni
+Útflutt úr einingunni
 =====================
 
 Notkun: b = makePqueue();
 Fyrir:  Ekkert.
-Eftir:  b inniheldur nÃ½ja tÃ³ma forgangsbiÃ°rÃ¶Ã°.
+Eftir:  b inniheldur nıja tóma forgangsbiğröğ af ótakmarkağri stærğ.
 
-Notkun: addToPqueue(q,x,l);
-Fyrir:  q er forgangsbiÃ°rÃ¶Ã° (fengin Ãºr makePqueue).
-		x er gildiÃ° sem Ã¡ aÃ° bÃ¦ta viÃ° forgangsbiÃ°rÃ¶Ã°.
+Notkun: addToPqueue(b,x,l);
+Fyrir:  b er forgangsbiğröğ (fengin úr makePqueue).
+		x er gildiğ sem á ağ bæta viğ forgangsbiğröğ.
 		l er lykill
-Eftir:  heiltÃ¶lunni x hefur veriÃ° bÃ¦tt Ã­ pokann b.
+Eftir:  heiltölunni x hefur veriğ bætt í forgangsbiğröğina b.
 
 Notkun: e = isEmpty(b);
-Fyrir:  b er forgangsbiÃ°rÃ¶Ã°.
-Eftir:  e er satt Ã¾Ã¾aa b sÃ© tÃ³m.
-
-Notkun: e = isFull(b);
-Fyrir: 	b er forgangsbiÃ°rÃ¶Ã°.
-Eftir: 	e er satt Ã¾Ã¾aa b sÃ© full.
+Fyrir:  b er forgangsbiğröğ.
+Eftir:  e er satt şşaa b sé tóm.
 
 Notkun: x = removeFromPqueue(b);
-Fyrir:  b er forgangsbiÃ°rÃ¶Ã°, ekki tÃ³m.
-Eftir:  BÃºiÃ° er aÃ° fjarlÃ¦gja stak Ãºr forgangsbiÃ°rÃ¶Ã°.
-		Ãetta stak er fremsta gildi sem hefur lykil
-		meÃ° mestan forgang.
+Fyrir:  b er forgangsbiğröğ, ekki tóm.
+Eftir:  Búiğ er ağ fjarlægja stak úr forgangsbiğröğ.
+		Şetta stak er gildi úr forgangsbiğröğinni 
+		sem hefur lykil meğ mestan forgang.
+		x er stakiğ sem var fjarlægt.
 
 ;;;}
 
@@ -36,17 +33,17 @@ Eftir:  BÃºiÃ° er aÃ° fjarlÃ¦gja stak Ãºr forgangsbiÃ°rÃ¶Ã°.
 "Pqueue.mmod" =
 {{
 
-;;; FastayrÃ°ing gagna:
-;;;   Poki para af gildum Ã¾ar sem annaÃ° gildiÃ° er
-;;;   tÃ¡kn (t.d. heiltala, strengur) og hitt er lykillinn af Ã¾vÃ­
-;;;   tÃ¡kni sem leyfir samanburÃ° Ã¡ milli Ã¾essa
-;;;   tÃ¡kns og annars Ã­ pokanum. Ã pokanum eru
-;;;   semsagt pÃ¶r [x1, l1],[x2, l2],...,[xN, lN] og
-;;;   pokinn er tÃ¡knaÃ°ur sem bendir Ã¡
-;;;   falda breytu x Ã¾ar sem x er
+;;; Fastayrğing gagna:
+;;;   Poki para af gildum şar sem annağ gildiğ er
+;;;   tákn (t.d. heiltala, strengur) og hitt er lykillinn af şví
+;;;   tákni sem leyfir samanburğ á milli şessa
+;;;   tákns og annars í pokanum. Í pokanum eru
+;;;   semsagt pör [x1, l1],[x2, l2],...,[xN, lN] og
+;;;   pokinn er táknağur sem bendir á
+;;;   falda breytu x şar sem x er
 ;;;   listi af listum [[x1, l1],[x2, l2],...,[xN, lN]], 
-;;;   eÃ°a listi af listum sÃ¶mu para Ã­ annarri rÃ¶Ã° Ã¾ar sem
-;;;   hver listi Ã­ listanum inniheldur tÃ¡kn og lykil Ã¾ess tÃ¡kns.
+;;;   eğa listi af listum sömu para í annarri röğ şar sem
+;;;   hver listi í listanum inniheldur tákn og lykil şess tákns.
 
 makePqueue =
 	fun()
@@ -75,7 +72,8 @@ removeFromPqueue =
 		var min = tail(head(temp));
 		var skilagildi = head(temp);
 		while(temp!=null){
-			if(tail(head(temp)) < min){
+			;;; Sammengi gilda í 
+			if(tail(head(temp)) <<>> min){
 				min = tail(head(temp));
 				skilagildi = head(temp);
 			};
@@ -84,6 +82,7 @@ removeFromPqueue =
 		temp = *q;
 		var nyrListi = [];
 		while(skilagildi != head(temp)){
+			;;;
 			var stak = head(temp);
 			nyrListi = stak : nyrListi;
 			temp = tail(temp);
@@ -92,32 +91,30 @@ removeFromPqueue =
 			*q = nyrListi;
 			skilagildi;
 		};
-		temp = tail(temp); ;;; hoppa yfir skilagildi
+		temp = tail(temp);
 		while(temp != null){
 			var stak = head(head(temp)) : tail(head(temp));
 			nyrListi = stak : nyrListi;
 			temp = tail(temp);
 		};
-
 		*q = nyrListi;
 		skilagildi;	
 	};
 }}
-{;;; EITTHVAÃ FUNKY?
 *
 {{
-<<== =
+<<>> =
 	fun(x,y)
 	{
-		<<< (5,6);
+		var out = x<<<y;
 	};
 }}
-;;;}
+
 ;
 
 
 
-"testPqueue.mexe" = main in
+"testPqueue1.mexe" = main in
 {{
 ;;; Notkun: main();
 ;;; Fyrir:  Ekkert.
@@ -127,8 +124,7 @@ removeFromPqueue =
 main =
 	fun()
 	{
-		;;; PrÃ³fun 1
-
+		;;; Prófun 1
 		writeln();
 		writeln("PROFUN 1");
 		writeln();
@@ -143,29 +139,6 @@ main =
 			var utkoma = removeFromPqueue(x);
 			writeln(tail(utkoma));
 		};
-		
-
-		;;; PrÃ³fun 2
-
-		writeln();
-		writeln("PROFUN 2");
-		writeln();
-
-		var y = makePqueue();
-		addToPqueue(y, 1, 1);
-		addToPqueue(y, 5, 5);
-		addToPqueue(y, 4, 4);
-		addToPqueue(y, 3, 3);
-		addToPqueue(y, 2, 2);
-		var utkomuListi = [];
-		for(var i = 1; i<6; i = i + 1){
-			utkomuListi = removeFromPqueue(y) : utkomuListi;
-		};
-		while(utkomuListi!=null){
-			writeln(tail(head(utkomuListi)));
-			utkomuListi = tail(utkomuListi);
-		};
-
 	};
 }}
 *
@@ -179,6 +152,42 @@ BASIS
 ;
 
 
+"testPqueue2.mexe" = main in
+{{
+;;; Notkun: main();
+;;; Fyrir:  Ekkert.
+;;; Eftir:  
+;;;         
+;;;         
+main =
+	fun()
+	{
+		;;; Prófun 2
+		writeln();
+		writeln("PROFUN 2");
+		writeln();
+
+		var x = makePqueue();
+		addToPqueue(x, 1, 1);
+		addToPqueue(x, 5, 5);
+		addToPqueue(x, 4, 4);
+		addToPqueue(x, 3, 3);
+		addToPqueue(x, 2, 2);
+		for(var i = 1; i<6; i = i + 1){
+			var utkoma = removeFromPqueue(x);
+			writeln(tail(utkoma));
+		};
+	};
+}}
+*
+"Pqueue.mmod"
+*
+{{
+<<< = fun >(x,y);
+}}
+*
+BASIS
+;
 
 
 
