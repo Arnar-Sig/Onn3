@@ -72,7 +72,8 @@ removeFromPqueue =
 		var min = tail(head(temp));
 		var skilagildi = head(temp);
 		while(temp!=null){
-			;;; Sammengi gilda í 
+			;;; temp er hlutmengi í q þar sem
+			;;; lengd á lista: 0 ? temp ? *q
 			if(tail(head(temp)) <<>> min){
 				min = tail(head(temp));
 				skilagildi = head(temp);
@@ -82,7 +83,8 @@ removeFromPqueue =
 		temp = *q;
 		var nyrListi = [];
 		while(skilagildi != head(temp)){
-			;;;
+			;;; heildarlengd nyrListi + temp = lengd *q
+			;;; eða upphaflegi listinn.
 			var stak = head(temp);
 			nyrListi = stak : nyrListi;
 			temp = tail(temp);
@@ -93,6 +95,9 @@ removeFromPqueue =
 		};
 		temp = tail(temp);
 		while(temp != null){
+			;;; heildarlengd nyrListi + temp = lengd *q - 1
+			;;; eða upphaflegi listinn án staks sem var 
+			;;; hoppað yfir.
 			var stak = head(head(temp)) : tail(head(temp));
 			nyrListi = stak : nyrListi;
 			temp = tail(temp);
@@ -118,8 +123,8 @@ removeFromPqueue =
 {{
 ;;; Notkun: main();
 ;;; Fyrir:  Ekkert.
-;;; Eftir:  
-;;;         
+;;; Eftir:  Búið er að skrifa tölurnar 1-5 í vaxandi röð,
+;;;         þá 1-2-3-4-5.       
 ;;;         
 main =
 	fun()
@@ -128,17 +133,23 @@ main =
 		writeln();
 		writeln("PROFUN 1");
 		writeln();
-
+		writeln("creating empty priorityQueue");
 		var x = makePqueue();
+		write("isEmpty(): "); writeln(isEmpty(x));
+		writeln("adding 5 elements to the priorityQueue");
 		addToPqueue(x, 1, 1);
 		addToPqueue(x, 5, 5);
 		addToPqueue(x, 4, 4);
 		addToPqueue(x, 3, 3);
 		addToPqueue(x, 2, 2);
+		write("done adding elements, checking if isEmpty(): "); writeln(isEmpty(x));
+		writeln("removing all 5 elements from priorityQueue and printing results:");
 		for(var i = 1; i<6; i = i + 1){
 			var utkoma = removeFromPqueue(x);
 			writeln(tail(utkoma));
 		};
+		writeln("done removing elements");
+		write("priorityQueue isEmpty(): "); writeln(isEmpty(x));
 	};
 }}
 *
@@ -151,13 +162,12 @@ main =
 BASIS
 ;
 
-
 "testPqueue2.mexe" = main in
 {{
 ;;; Notkun: main();
 ;;; Fyrir:  Ekkert.
-;;; Eftir:  
-;;;         
+;;; Eftir:  Búið er að skrifa tölurnar 1-5 í minnkandi röð,
+;;;         þá 5-4-3-2-1.
 ;;;         
 main =
 	fun()
@@ -166,17 +176,23 @@ main =
 		writeln();
 		writeln("PROFUN 2");
 		writeln();
-
+		writeln("creating empty priorityQueue");
 		var x = makePqueue();
+		write("isEmpty(): "); writeln(isEmpty(x));
+		writeln("adding 5 elements to the priorityQueue");
 		addToPqueue(x, 1, 1);
 		addToPqueue(x, 5, 5);
 		addToPqueue(x, 4, 4);
 		addToPqueue(x, 3, 3);
 		addToPqueue(x, 2, 2);
+		write("done adding elements, checking if isEmpty(): "); writeln(isEmpty(x));
+		writeln("removing all 5 elements from priorityQueue and printing results:");
 		for(var i = 1; i<6; i = i + 1){
 			var utkoma = removeFromPqueue(x);
 			writeln(tail(utkoma));
 		};
+		writeln("done removing elements");
+		write("priorityQueue isEmpty(): "); writeln(isEmpty(x));
 	};
 }}
 *
@@ -188,8 +204,3 @@ main =
 *
 BASIS
 ;
-
-
-
-
-
