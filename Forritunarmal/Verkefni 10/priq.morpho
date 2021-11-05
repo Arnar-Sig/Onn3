@@ -1,0 +1,224 @@
+;;; Hönnunarskjal
+;;;
+;;;		Útflutt
+;;;
+;;;			Notkun: p = priq();
+;;;			Fyrir:  Ekkert
+;;;			Eftir:  p er tóm forgangsbiðröð
+;;;					með pláss fyrir ótakmarkaðan
+;;;					fjölda gilda á meðan minni 
+;;;					tölvunnar leyfir.
+;;;		
+;;;		Innflutt
+;;;
+;;;			Notkun: p.add(x, l);
+;;;			Fyrir:  p er forgangsbiðröð 
+;;;					x er gildi
+;;;					l er lykill fyrir gildið
+;;;			Eftir:  Búið er að setja gildið x með lykilinn l
+;;; 				inn í forgangsbiðröðina p.
+;;;
+;;;			Notkun: x = p.remove();
+;;;			Fyrir:  p er forgangsbiðröð, ekki tóm.
+;;;			Eftir:  Búið er að taka gildið sem hefur lykil með
+;;;					mestan forgang út úr forgangsbiðröðinni
+;;;					og því gildi er skilað í gildið x.
+;;;
+;;;			Notkun: p.isEmpty();
+;;;			Fyrir:  p er forgangsbiðröð
+;;;			Eftir:  Skilar satt ef forgangsbiðröð er tóm, og
+;;;					skilar ósatt ef hún er ekki tóm.
+;;;				
+;;;			Notkun: p.print();
+;;;			Fyrir:  p er forgangsbiðröð
+;;;			Eftir:  Innihald forgangsbiðraðar hefur verið prentað út.
+;;;
+;;;			Notkun:	b = x <<>> y;
+;;;			Fyrir:	x og y eru löglegir lyklar fyrir forgangsbiðröð.
+;;;			Eftir:	b er satt þá og því aðeins að x er á undan y.
+;;;
+;;;
+
+
+"priq.mmod" = 
+{{
+;;; Fastayrðing gagna: Forgangsbiðröð af pörum gilda þar sem annað gildið er
+;;; eitthvert gildi (t.d. heiltala, strengur) og hitt er lykillinn af því gildi
+;;; en lykillinn leyfir samanburð á milli tveggja gilda í forgangsbiðröðinni.
+;;;	Þetta er geymt sem listi af listum [[x1,l1],..., [xN,lN]] eða annar listi af 
+;;; listum sömu para í annari röð þar sem hver listi inni í listanum er 
+;;; par af gildi og lykli.
+
+
+priq = obj() {
+
+		var listi = [];
+
+		msg add(x,l){
+			var temp = x:l;
+			if(listi==null){
+				listi = [temp];
+			}
+			else{
+				listi = temp:listi;
+			};
+		};
+		
+		msg isEmpty(){
+			listi == [];
+		};
+		
+		msg print(){
+			writeln(listi);
+		};
+
+		msg remove(){
+			var temp = listi;
+			var min = tail(head(temp));
+			var skilagildi = head(temp);
+			while(temp!=null){
+				;;; Innihald listans temp er í mesta lagi
+				;;; jafnt listans listi og í minnsta lagi
+				;;; er temp tómur.Öll gildi í temp eru
+				;;; einnig gildi í listi.
+				if(tail(head(temp)) <<>> min){
+					min = tail(head(temp));
+					skilagildi = head(temp);
+				};
+				temp = tail(temp);
+			};
+			temp = listi;
+			var nyrListi = [];
+			while(skilagildi != head(temp)){
+				;;; heildarlengd nyrListi + temp = lengd *q
+				;;; og öll gildi úr listunum nyrListi og temp
+				;;; koma fyrir í listanum *q.
+				var stak = head(temp);
+				nyrListi = stak : nyrListi;
+				temp = tail(temp);
+			};
+			temp = tail(temp);
+			while(temp != null){
+				;;; heildarlengd nyrListi + temp = lengd *q - 1
+				;;; Öll gildi í nyrListi og temp koma fyrir í 
+				;;; listanum *q að frátöldu einu gildi.
+				var stak = head(head(temp)) : tail(head(temp));
+				nyrListi = stak : nyrListi;
+				temp = tail(temp);
+			};
+			listi = nyrListi;
+			skilagildi;	
+		}
+	};
+}}
+*
+{{
+<<>> =
+	fun(x,y)
+	{
+		var out = x<<<y;
+	};
+}}
+;
+
+;;; Prófun með heiltölum sem skrifar tölurnar í vaxandi röð.
+
+"priqtest1.mexe" = main in
+{{
+;;; Notkun: main();
+;;;	Fyrir:  ekkert
+;;; Eftir:  tölur hafa verið settar inn í forgangsbiðröðina og
+;;;	        svo hafa tölurnar verið teknar úr henni og prentaðar,
+;;;         þar sem tölurnar koma út í vaxandi röð.
+main =
+	fun()
+	{
+		val pq = priq();
+		var list = [1,9,2,8,3,7,4,7,5,6,6];
+		writeln();
+		while(list!=null)
+		{
+			;;; pq er forgangsbiðröð sem inniheldur núll eða
+			;;; fleiri af þeim gildum sem breytan list innihélt
+			;;; upphaflega. Restin er enn í list.
+			pq.add(head(list),head(list));
+			list = tail(list);
+		};
+		;;; Breytan list er nú [] og pq
+		;;; inniheldur gildin 1,9,2,8,3,7,4,7,5,6,6
+		write("innihald pq: ");
+		pq.print();
+		while(!pq.isEmpty())
+		{
+			;;; Núll eða fleiri fremstu gildi úr pq hafa verið
+			;;; skrifuð í forgangsröð. Hin eru enn í pq.
+			var utkoma = pq.remove();
+			write("utkoma ur pq.remove(): "); writeln(utkoma);
+		};
+		;;; pq er nú tóm og búið er að skrifa allar tölurnar
+		write("Innihald pq: ");
+		pq.print();
+	};
+}}
+*
+"priq.mmod"
+*
+{{
+<<< = fun <(x,y);
+}}
+*
+BASIS
+;
+
+;;; Prófun með heiltölum sem skrifar tölurnar í minnkandi röð.
+
+"priqtest2.mexe" = main in
+{{
+;;; Notkun: main();
+;;;	Fyrir:  ekkert
+;;; Eftir:  tölur hafa verið settar inn í forgangsbiðröðina og
+;;;	        svo hafa tölurnar verið teknar úr henni og prentaðar,
+;;;         þar sem tölurnar koma út í minnkandi röð.
+main =
+	fun()
+	{
+		val pq = priq();
+		var list = [1,9,2,8,3,7,4,7,5,6,6];
+		writeln();
+		while(list!=null)
+		{
+			;;; pq er forgangsbiðröð sem inniheldur núll eða
+			;;; fleiri af þeim gildum sem breytan list innihélt
+			;;; upphaflega. Restin er enn í list.
+			pq.add(head(list),head(list));
+			list = tail(list);
+		};
+		;;; Breytan list er nú [] og pq
+		;;; inniheldur gildin 1,9,2,8,3,7,4,7,5,6,6
+		write("innihald pq: ");
+		pq.print();
+		while(!pq.isEmpty())
+		{
+			;;; Núll eða fleiri fremstu gildi úr pq hafa verið
+			;;; skrifuð í forgangsröð. Hin eru enn í pq.
+			var utkoma = pq.remove();
+			write("utkoma ur pq.remove(): "); writeln(utkoma);
+		};
+		;;; pq er nú tóm og búið er að skrifa allar tölurnar
+		write("Innihald pq: ");
+		pq.print();
+	};
+}}
+*
+"priq.mmod"
+*
+{{
+<<< = fun >(x,y);
+}}
+*
+BASIS
+;
+
+
+
+

@@ -1,0 +1,138 @@
+;;; Hönnunarskjal
+;;;
+;;;		Útflutt
+;;;
+;;;			Notkun: p = queue();
+;;;			Fyrir:  Ekkert
+;;;			Eftir:  p er tóm biðröð
+;;;					með pláss fyrir ótakmarkaðan
+;;;					fjölda gilda á meðan minni 
+;;;					tölvunnar leyfir.
+;;;		
+;;;		Innflutt
+;;;
+;;;			Notkun: p.add(x);
+;;;			Fyrir:  p er biðröð 
+;;;			Eftir:  Búið er að setja x inn í biðröðina.
+;;;
+;;;			Notkun: p.isEmpty();
+;;;			Fyrir:  p er biðröð
+;;;			Eftir:  Skilar satt ef biðröð er tóm, og
+;;;					skilar ósatt ef hún er ekki tóm.
+;;;
+;;;			Notkun: n = p.remove(x);
+;;;			Fyrir:  p er biðröð, ekki tóm.
+;;;			Eftir:  Búið er að taka gildið sem hefur verið 
+;;;					lengst í biðröðinni út úr biðröðinni 
+;;;					og skila því í breytuna n.
+;;;
+;;;				
+;;;			Notkun: p.print();
+;;;			Fyrir:  p er biðröð
+;;;			Eftir:  Búið er að prenta út innihald biðraðar.
+
+
+
+"queue.mmod" = 
+{{
+;;; Fastayrðing gagna: Biðröð sem inniheldur gildi x1,...,xN 
+;;;	táknað með lista þar sem aftasta gildið í listanum, xN,
+;;;	er það gildi sem hefur verið lengst í biðröðinni. xN-1 
+;;; væri þá búið að vera næstlengst í biðröðinni alveg upp 
+;;; að gildi x1 sem er það gildi sem var nýlegast sett í biðröðina.
+
+queue = obj() {
+		var listi = [];
+
+		msg add(x){
+			if(listi==null){
+				listi = [x];
+			}
+			else{
+				listi = x:listi;
+			};
+		};
+		
+		msg isEmpty(){
+			listi == [];
+		};
+
+		msg remove(){
+			var temp = listi;
+			var reversed = [];
+			while(temp){
+				;;; listarnir reversed og temp lagðir saman
+				;;; innihalda nákvæmlega sömu gildi og listinn listi.
+				reversed = head(temp) : reversed;
+				temp = tail(temp);
+			};
+			var skilagildi = head(reversed);
+			reversed = tail(reversed);
+			temp = [];
+			while(reversed){
+				;;; listarnir reversed og temp lagðir saman
+				;;; innihalda öll nema eitt gildi úr listanum listi.
+				temp = head(reversed) : temp;
+				reversed = tail(reversed);
+			};
+			listi = temp;
+			skilagildi;
+		}
+
+		msg print(){
+			writeln(listi);
+		};
+	};
+}};
+
+;;; Prófun með heiltölum sem skrifar tölurnar út
+
+"queuetest.mexe" = main in
+{{
+;;; Notkun: main();
+;;;	Fyrir:  ekkert
+;;; Eftir:  tölur hafa verið settar inn í biðröðina og
+;;;	        svo hafa tölurnar verið teknar úr henni og prentaðar,
+;;; 		í þeirri röð sem þær voru settar í biðröðina, þannig að
+;;;         fyrsta talan sett í biðröðina prentast fyrst út og svo
+;;;         talan sem kom inn á eftir henni osfv.
+
+main =
+	fun()
+	{
+		val q = queue();
+		q.add(1);
+		q.add(2);
+		q.add(3);
+		q.add(4);
+		q.add(5);
+		q.add(6);
+		q.add(7);
+		q.add(8);
+		q.add(9);
+		writeln("added numbers 1-9 to queue, starting with 1");
+		write("removing the element first in line: "); writeln(q.remove());
+		writeln("the queue after removing the element: ");
+		q.print();
+		while(!q.isEmpty()){
+			;;; Búið er að skrifa núll eða fleiri gildi úr biðröðinni q
+			;;; Þau gildi sem voru upphaflega sett í biðröðina en hafa ekki
+			;;; verið skrifuð út, eru enn í biðröðinni q.
+			write("removing oldest element from queue: ");
+			var x = q.remove();
+			writeln(x);
+			write("current queue: "); q.print();
+		};
+		writeln("finished emptying the queue!");
+	};
+}}
+*
+"queue.mmod"
+*
+BASIS
+;
+
+
+
+
+

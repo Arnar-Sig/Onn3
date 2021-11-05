@@ -1,0 +1,2 @@
+java -jar morpho.jar -c intbag.morpho
+java -jar morpho.jar intbagtest
