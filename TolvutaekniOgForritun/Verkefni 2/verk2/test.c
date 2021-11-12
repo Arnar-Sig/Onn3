@@ -59,58 +59,45 @@ void printSummary(int hits, int misses, int evictions)
 
 void accessData(mem_addr_t addr)
 {
-    /* Þið þurfið að útfæra þetta fall sem útfærir minnisaðgang
-      printf("  linux>  %s -s 8 -E 2 -b 4 -t traces/yi.trace\n", argv[0]);
-     */
     mem_addr_t bbits = (((1 << b)-1)& (addr >> (1-1))); //blokkarhliðrun
     mem_addr_t sbits = (((1 << s)-1)& (addr >> b));     //mengi
     mem_addr_t tbits = addr >> (b+s);                   //tag
+    int success = 0;
+    /*
     //printf("bbiti: %d\n", bbits);
     //printf("sbiti: %d\n", sbits);
     //printf("tbits: %d\n", tbits);
-
-    /* Af netinu
-    mem_addr_t sBit = addr >> b;
-    int set = sBit & ((int)pow(2,s) -1);
-    printf("set (af neti): %d\n", set);
-    */
     //printf("mem_addr_t: %llx\n", addr);
     //printf("bbits: %d\n", bbits);
     //printf("sbits: %d\n", sbits);
     //printf("tbits: %u\n", tbits);
+    */
 
-    
-    
-    int success = 0;
+    /* Athuga hvort tag í einhverri línu sé eins og tag inntaks og er valid. Ef svo er, staðfesta smell og hætta í lykkju */
     for(int i = 0; i<E; i++){
         if(skyndiminni[sbits][i].tag == tbits && skyndiminni[sbits][i].valid == 1){
-            //printf("i skyndiminni[%d][%d] er tag: %u\n", sbits, i, tbits);
             success = 1;
             skyndiminni[sbits][i].lru = counter[sbits];
             lru_counter++;
             hit_count++;
-            if(counter[sbits]<skyndiminni[sbits][i].lru){
-                counter[sbits] = skyndiminni[sbits][i].lru;
-            }
             break;
         }
     }
+    /* Athuga hvort einhver lína hafi valid=0 og ef svo er, uppfæra þá línu með núverandi inntaki, staðfesta skell og hætta í lykkju.
+       Ef engin lína er laus er núverandi inntak sett í þá línu sem er lengst síðan var breytt, eða með minnsta lru. Svo er staðfest
+       eviction og skellur. */
     if(success==0){
-        int min_lru_line = 0;;
+        int min_lru_line = 0;
         for(int i = 0; i<E; i++){
             if(skyndiminni[sbits][i].lru < skyndiminni[sbits][min_lru_line].lru){
                 min_lru_line = i;
             }
             if(skyndiminni[sbits][i].valid == 0){
-                //printf("kaldur skellur, set i skyndiminni[%d][%d] tagid: %u\n", sbits, i, tbits);
                 skyndiminni[sbits][i].valid = 1;
                 skyndiminni[sbits][i].tag = tbits;
                 skyndiminni[sbits][i].lru = lru_counter;
                 lru_counter++;
                 miss_count++;
-                if(counter[sbits] > skyndiminni[sbits][i].lru){
-                    counter[sbits] = skyndiminni[sbits][i].lru;
-                }
                 success = 1;
                 break;
             }
@@ -120,10 +107,17 @@ void accessData(mem_addr_t addr)
             skyndiminni[sbits][min_lru_line].tag = tbits;
             skyndiminni[sbits][min_lru_line].lru = lru_counter;
             lru_counter++;
+            eviction_count++;
             miss_count++;
             success = 1;
         }
-    }  
+        /* Uppfæra counter[mengi] svo það geymi minnsta lru gildið í menginu. */
+        for(int i = 0; i<E; i++){
+            if(counter[sbits] > skyndiminni[sbits][i].lru){
+                counter[sbits] = skyndiminni[sbits][i].lru;
+            }
+        }
+    }
 }
 
 void replayTrace(char* trace_fn)
