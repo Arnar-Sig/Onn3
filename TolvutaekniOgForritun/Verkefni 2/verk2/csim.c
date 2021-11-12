@@ -48,17 +48,30 @@ int hit_count = 0;
 int eviction_count = 0;
 unsigned long long int lru_counter = 1;
 
-
+/*
+    cache struct
+*/
+struct Cache {
+    int valid;
+    int tag;
+    long lru;
+};
+struct Cache** skyndiminni;
 
 /* 
  * initCache - Allocate memory, write 0's for valid and tag and LRU
  */
 void initCache()
 {
-
-    /* Þið þurfið að útfæra þetta fall sem upphafsstillir gagnagrindurnar
-     */
-
+    skyndiminni = malloc(S * sizeof(struct Cache*));
+    for(int i =0; i<S; i++){
+        skyndiminni[i] = malloc(E * sizeof(struct Cache));
+        for(int l = 0; l<E; l++){
+            skyndiminni[i][l].lru = 0;
+            skyndiminni[i][l].tag = l;
+            skyndiminni[i][l].valid = 0;
+        }
+    }
 }
 
 
@@ -85,6 +98,8 @@ void accessData(mem_addr_t addr)
 
     /* Þið þurfið að útfæra þetta fall sem útfærir minnisaðgang
      */
+
+    
 
 }
 
@@ -129,7 +144,12 @@ void printSummary(int hits, int misses, int evictions)
 }
 
 /*
- * printUsage - Print usage info
+ * printUsage - Print usage infostruct Node {
+    int line;
+    int legal;
+    struct Node* next;
+}
+
  */
 void printUsage(char* argv[])
 {
