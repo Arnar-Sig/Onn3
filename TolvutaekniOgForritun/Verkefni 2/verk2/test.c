@@ -28,14 +28,13 @@ int miss_count = 0;
 int hit_count = 0;
 int eviction_count = 0;
 unsigned long long int lru_counter = 0;
-
 struct Cache** skyndiminni;
-//Stærsti counter í hverju "mengi" eða hverju hólfi í fylkinu skyndiminni
+
+/*Stærsti lru í hverju "mengi" eða hverju hólfi í fylkinu skyndiminni */
 int* counter;
 
-/* 
- * initCache - Allocate memory, write 0's for valid and tag and LRU
- */
+/* Býr til gagnagrind sem hermir eftir skyndiminni. Býr til fylki af bendum af stærð S sem tákna mengin og svo inni í hverju hólfi
+er svo bendir á fylki af Cache hlutum af stærð E sem tákna línurnar */
 void initCache()
 {
     skyndiminni = malloc(S * sizeof(struct Cache*));
@@ -49,12 +48,6 @@ void initCache()
             skyndiminni[i][l].valid = 0;
         }
     }
-}
-
-void printSummary(int hits, int misses, int evictions)
-{
-    printf("hits: %d  misses: %d  evictions: %d\n", hits, misses, evictions);
-    printf("miss ratio: %.2f%%\n", 100.0*misses/(hits+misses));
 }
 
 void accessData(mem_addr_t addr)
@@ -146,15 +139,14 @@ void replayTrace(char* trace_fn)
 
     fclose(trace_fp);
 }
+void printSummary(int hits, int misses, int evictions)
+{
+    printf("hits: %d  misses: %d  evictions: %d\n", hits, misses, evictions);
+    printf("miss ratio: %.2f%%\n", 100.0*misses/(hits+misses));
+}
 
 
 int main(int argc, char* argv[]){
-    /*
-    initCache();
-    struct Node example = skyndiminni[5];
-    printf("%ld\n", example.data);
-    gamla main
-    */
    initCache();
    //printf("  linux>  %s -s 8 -E 2 -b 4 -t traces/yi.trace\n", argv[0]);
    replayTrace("traces/gauss.trace");
