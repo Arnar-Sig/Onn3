@@ -57,17 +57,13 @@ struct Cache {
 
 struct Cache** skyndiminni;
 
-/*Lægsti lru í hverju "mengi" */
-unsigned long long int* counter;
 
 /* Býr til gagnagrind sem hermir eftir skyndiminni. Býr til fylki af bendum af stærð S sem tákna mengin og svo inni í hverju hólfi
 er svo bendir á fylki af Cache hlutum af stærð E sem tákna línurnar */
 void initCache()
 {
     skyndiminni = malloc(S * sizeof(struct Cache*));
-    counter = malloc(S* sizeof(int));
     for(int i =0; i<S; i++){
-        counter[i] = 0;
         skyndiminni[i] = malloc(E * sizeof(struct Cache));
         for(int l = 0; l<E; l++){
             skyndiminni[i][l].lru = 0;
@@ -84,12 +80,10 @@ void initCache()
 void freeCache()
 {
     for(int i=0; i<E; i++){
-        free(*(skyndiminni + i));
+        free(skyndiminni[i]);
     }
     free(skyndiminni);
-    skyndiminni = NULL;
 }
-
 
 /* 
  * accessData - Access data at memory address addr.
@@ -118,34 +112,32 @@ void accessData(mem_addr_t addr)
        Ef engin lína er laus er núverandi inntak sett í þá línu sem er lengst síðan var breytt, eða með minnsta lru. Svo er staðfest
        eviction og skellur. */
     if(success==0){
-        for(int i = 0; i<E; i++){
-            /* Kaldur skellur */
-            if(skyndiminni[sbits][i].valid == 0){
-                skyndiminni[sbits][i].valid = 1;
-                skyndiminni[sbits][i].tag = tbits;
-                skyndiminni[sbits][i].lru = lru_counter;
-                lru_counter++;
-                miss_count++;
-                success = 1;
-                break;
+        unsigned long long int teljari = lru_counter;
+        int lina = 0;
+
+        for(int i=0; i<E; i++){
+            if(skyndiminni[sbits][i].lru < teljari){
+                lina = i;
+                teljari = skyndiminni[sbits][i].lru;
             }
         }
-        /* Passar ekki við neina línu í menginu */
-        if(success==0){
-            skyndiminni[sbits][counter[sbits]].valid = 1;
-            skyndiminni[sbits][counter[sbits]].tag = tbits;
-            skyndiminni[sbits][counter[sbits]].lru = lru_counter;
-            lru_counter++;
+
+        for(int i=0; i<E; i++){
+            if(skyndiminni[sbits][i].lru < teljari){
+                lina = i;
+                skyndiminni[sbits][i].lru = teljari;
+            }
+        }
+
+        if(skyndiminni[sbits][lina].valid == 1){
             eviction_count++;
-            miss_count++;
-            success = 1;
         }
-        /* Uppfæra counter[mengi] svo það geymi minnsta lru gildið í menginu. */
-        for(int i = 0; i<E; i++){
-            if(counter[sbits] > skyndiminni[sbits][i].lru){
-                counter[sbits] = skyndiminni[sbits][i].lru;
-            }
-        }
+        skyndiminni[sbits][lina].valid = 1;
+        skyndiminni[sbits][lina].tag = tbits;
+        skyndiminni[sbits][lina].lru = lru_counter;
+        lru_counter++;
+        miss_count++;
+
     }
 }
 
@@ -185,8 +177,12 @@ void replayTrace(char* trace_fn)
  */
 void printSummary(int hits, int misses, int evictions)
 {
+    /* GAMLA
     printf("hits: %d  misses: %d  evictions: %d\n", hits, misses, evictions);
     printf("miss ratio: %.2f%%\n", 100.0*misses/(hits+misses));
+    */
+   printf("s: %d, E: %d, b: %d =", s, E, b);
+   printf(" miss ratio: %.2f%%\n", 100.0*misses/(hits+misses));
 }
 
 /*
@@ -260,7 +256,7 @@ int main(int argc, char* argv[])
     replayTrace(trace_file);
 
     /* Free allocated memory */
-    //freeCache();
+    freeCache();
 
     /* Output the hit and miss statistics */
     printSummary(hit_count, miss_count, eviction_count);

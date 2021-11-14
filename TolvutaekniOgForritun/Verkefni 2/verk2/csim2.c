@@ -123,14 +123,20 @@ void accessData(mem_addr_t addr)
                 teljari = skyndiminni[sbits][i].lru;
             }
         }
-        if(skyndiminni[sbits][lina].valid == 1){
-            eviction_count++;
+
+        for(int i=0; i<E; i++){
+            if(skyndiminni[sbits][i].lru == teljari){
+                if(skyndiminni[sbits][i].valid == 1){
+                    eviction_count++;
+                }
+                skyndiminni[sbits][lina].valid = 1;
+                skyndiminni[sbits][lina].tag = tbits;
+                skyndiminni[sbits][lina].lru = lru_counter;
+                miss_count++;
+                lru_counter++;
+            }
         }
-        skyndiminni[sbits][lina].valid = 1;
-        skyndiminni[sbits][lina].tag = tbits;
-        skyndiminni[sbits][lina].lru = lru_counter;
-        miss_count++;
-        lru_counter++;
+
     }
 
 }
