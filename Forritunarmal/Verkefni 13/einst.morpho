@@ -1,0 +1,59 @@
+rec fun thradur(){
+	val container = makeChannel();
+	var summa1 = 0;
+	var summa2 = 0;
+	go
+	{
+		for(;;)
+		{
+			summa1 = summa1 + <- container;
+
+		};
+	};
+    go
+	{
+		for(;;)
+		{
+			summa2 = summa2 + <- container;
+		};
+	};
+	{
+		for(var i=1; i<10001; i=i+1){
+			;;; Fjöldi gilda sem hafa verið sett í containerinn c
+          	;;; er á bilinu i - 10000.
+			container <- i;
+		};
+	};
+	{
+		for(var j=1; j<10001; j=j+1){
+			;;; Fjöldi gilda sem hafa verið sett í containerinn c
+          	;;; er á bilinu j - 10000.
+			container <- j;
+		};
+	};
+
+	write("summa1: "); writeln(summa1);
+	write("summa2: "); writeln(summa2);
+};
+
+
+
+
+thradur();
+
+summa1: 49310380
+summa2: 50699620
+
+summa1: 50635255
+summa2: 49374745
+
+summa1: 48752322
+summa2: 51257678
+
+summa1: 50555499
+summa2: 49454501
+
+summa1: 50428667
+summa2: 49581333
+
+
