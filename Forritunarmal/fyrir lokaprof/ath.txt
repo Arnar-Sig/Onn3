@@ -1,0 +1,5 @@
+﻿Verkefnablað 2: myappend, skoða syntaxinn á incall
+Verkefnablað 3: Kíkja á lambda syntaxinn
+Verkefnablað 4: Athuga aðeins revindex, hvort það komi rétt niðurstaða
+		 Athuga foldr(hjalparfall með reverse) og foldl(straightforward) 
+verkefnablað 5: Gera strauma aftur og aftur, athuga byltastrauma líka

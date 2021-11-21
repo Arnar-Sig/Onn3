@@ -1,8 +1,0 @@
-(define (sum x)
-  (if(null? x)
-     '()
-     (if(null? (cdr x))
-        (car x)
-        (+ (car x) (sum (cdr x))))))
-
-

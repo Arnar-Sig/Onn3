@@ -1,4 +1,0 @@
-;1
-(lambda (x)
-  (lambda (y)
-    (/ (+´x y) y)))

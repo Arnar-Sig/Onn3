@@ -1,0 +1,6 @@
+(define (square x)
+  (define (hjalp s x)
+    (if (null? x)
+        s
+        (hjalp (+ s (* (car x) (car x))) (cdr x))))
+  (hjalp 0 x))
