@@ -1,0 +1,5 @@
+(define (foldr f u x)
+  (if(null? x)
+     u
+     (f (car x) (foldr f u (cdr x)))))
+

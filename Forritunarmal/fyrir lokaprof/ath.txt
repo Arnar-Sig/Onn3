@@ -1,5 +1,8 @@
-ï»¿VerkefnablaÃ° 2: myappend, skoÃ°a syntaxinn Ã¡ incall
-VerkefnablaÃ° 3: KÃ­kja Ã¡ lambda syntaxinn
-VerkefnablaÃ° 4: Athuga aÃ°eins revindex, hvort Ã¾aÃ° komi rÃ©tt niÃ°urstaÃ°a
-		 Athuga foldr(hjalparfall meÃ° reverse) og foldl(straightforward) 
-verkefnablaÃ° 5: Gera strauma aftur og aftur, athuga byltastrauma lÃ­ka
+Verkefnablağ 2: myappend, skoğa syntaxinn á incall
+Verkefnablağ 3: Kíkja á lambda syntaxinn
+Verkefnablağ 4: Athuga ağeins revindex, hvort şağ komi rétt niğurstağa
+		 Athuga foldr(hjalparfall meğ reverse) og foldl(straightforward) 
+verkefnablağ 5: Gera strauma aftur og aftur, athuga byltastrauma/byltafylki líka
+Verkefnablağ 7: Athuga powerlist sérstaklega
+
+Lokaprof 19: athuga mapreduce, sjá hvağ "op" er

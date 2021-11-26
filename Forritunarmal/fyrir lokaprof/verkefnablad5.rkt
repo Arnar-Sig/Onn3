@@ -35,10 +35,10 @@
 ;; Fyrir:  f er tvíundaraðgerð, x=[x1 x2 ...] og y=[y1 y2 ...]
 ;;         eru óendanlegir straumar fyrri og seinni viðfanga í f
 ;; Gildi:  óendanlegi straumurinn [(f x1 y1) (f x2 y2) ...]
-(define (stream-binop + x y)
+(define (stream-binop f x y)
     (cons-stream 
-        (+ (stream-car x) (stream-car y))
-        (stream-binop + (stream-cdr x) (stream-cdr y))
+        (f (stream-car x) (stream-car y))
+        (stream-binop f (stream-cdr x) (stream-cdr y))
     )
 )
 

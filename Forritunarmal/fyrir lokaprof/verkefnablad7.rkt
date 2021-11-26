@@ -374,3 +374,12 @@
 )
 
 
+
+; 4
+
+(define (powerlist n)
+  (define (hjalp i)
+    (if(> i n)
+       '(())
+       (append (hjalp(+ i 1)) (map (lambda(z) (cons i z)) (hjalp(+ i 1))))))
+    (hjalp 1))
