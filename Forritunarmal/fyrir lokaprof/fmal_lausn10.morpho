@@ -1,0 +1,338 @@
+;;; Hópverkefni 10.
+;;; Lausnin á einstaklingsverkefninu er fyrir neðan.
+
+{;;;
+Hönnunarskjal fyrir fjölnota forgangsbiðröð
+===========================================
+
+Útflutt
+-------
+
+Notkun: pq = make();
+Fyrir:  Ekkert.
+Eftir:  pq er ný tóm forgangsbiðröð þar sem lyklarnir
+        mega vera af þeirri gerð gilda sem lögleg eru
+        sem viðföng í innfluttu aðgerðina <<<.
+
+Innflutt
+--------
+
+Notkun: b = x <<< y;
+Fyrir:  x og y eru gildi af þeirri gerð sem við
+        leyfum sem lykla fyrir gildi í forgangsbiðraðir.
+Eftir:  b er satt ef lykillinn x verður að vera á undan
+        lyklinum y, ósatt ef lykillinn y verður að vera
+        á undan lyklinum x.
+Aths.:  Ef ekki skiptir máli hvor lykillinn er á undan
+        þá má skilagildið vera hvað sem er.
+        Ef b er satt þá má x vera á undan y.
+        Ef b er ósatt þá má y vera á undan x.
+
+Notkun: pq.add(k,v);
+Fyrir:  pq er forgangsbiðröð, k er lykill, þ.e. af þeirri
+        gerð gilda sem leyfileg eru sem viðföng í innfluttu
+        aðgerðina <<<.
+Eftir:  Búið er að bæta gildinu v við forgangsbiðröðina
+        undir lyklinum k.
+        
+Notkun: b = pq.isEmpty();
+Fyrir:  pq er forgangsbiðröð.
+Eftir:  b er satt þþaa pq sé tóm.
+
+Notkun: v = pq.remove();
+Fyrir:  pq er forgangsbiðröð, ekki tóm.
+Eftir:  Eitt gildi, v, hefur verið fjarlægt úr pq.
+        það gildi hafði lykil sem mátti vera fyrir framan
+        alla aðra lykla í pq.
+;;;}
+
+
+"priq.mmod" =
+{{
+
+make =
+	obj()
+	{
+		var list = [];
+
+		{;;;
+
+		Fastayrðing gagna:
+		==================
+
+		Forgangsbiðröð sem inniheldur pörin (k1,v1), (k2,v2), ..., (kN,vN),
+		þar sem k1 er lykill fyrir v1, o.s.frv., og k1 má vera á undan k2,
+		o.s.frv., er geymd þannig að tilviksbreytan list inniheldur lista
+		[[k1$v1],[k2,v2],....,[kN,vN]].
+
+		;;;}
+		msg remove()
+		{
+			val v = tail(head(list));
+			list = tail(list);
+			v
+		};
+
+		msg add(k,v)
+		{
+			if( ! list || k<<<head(head(list)) )
+			{
+				;;; k má vera á undan öllum öðrum lyklum
+				list = [[k$v]$list];
+				return [];
+			};
+			var z = list;
+			while( tail(z) && head(head(tail(z)))<<<k )
+			{
+				;;; z vísar á einhvern hlekk í keðjunni sem
+				;;; inniheldur pörin í forgangsbiðröðinni.
+				;;; Sá hlekkur inniheldur lykil sem má vera
+				;;; á undan lyklinum k.
+				z = tail(z);
+			};
+			setTail(z,[k$v]:tail(z));
+		};
+
+		msg isEmpty()
+		{
+			! list
+		};
+	};
+}}
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Prófunarforrit
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;; Prófun með heiltölum sem skrifar tölurnar í vaxandi röð.
+
+{;;; Skrifar:
+1
+2
+3
+4
+5
+6
+6
+7
+7
+8
+9
+;;;}
+"priqtest1.mexe" = main in
+{{
+main =
+    fun()
+    {
+        val pq = make();
+        var list = [1,9,2,8,3,7,4,7,5,6,6];
+        while( list )
+        {
+            ;;; pq er forgangsbiðröð sem inniheldur núll eða
+            ;;; fleiri af þeim gildum sem breytan list innihélt
+            ;;; upphaflega. Restin er enn í list.
+            pq.add(head(list),head(list));
+            list = tail(list);
+        };
+        ;;; Breytan list er nú [] og pq
+        ;;; inniheldur gildin 1,9,2,8,3,7,4,7,5,6,6
+        while( !pq.isEmpty() )
+        {
+            ;;; Núll eða fleiri fremstu gildi úr pq hafa verið
+            ;;; skrifuð í forgangsröð. Hin eru enn í pq.
+            writeln(pq.remove());
+        };
+        ;;; pq er nú tóm og búið er að skrifa allar tölurnar
+    };
+}}
+*
+"priq.mmod"
+*
+{{
+<<< = fun <(x,y);
+}}
+*
+BASIS
+;
+
+;;; Prófun með heiltölum sem skrifar tölurnar í minnkandi röð.
+
+{;;; Skrifar:
+9
+8
+7
+7
+6
+6
+5
+4
+3
+2
+1
+;;;}
+"priqtest2.mexe" = main in
+{{
+main =
+    fun()
+    {
+        val pq = make();
+        var list = [1,9,2,8,3,7,4,7,5,6,6];
+        while( list )
+        {
+            ;;; pq er forgangsbiðröð sem inniheldur núll eða
+            ;;; fleiri af þeim gildum sem breytan list innihélt
+            ;;; upphaflega. Restin er enn í list.
+            pq.add(head(list),head(list));
+            list = tail(list);
+        };
+        ;;; Breytan list er nú [] og pq
+        ;;; inniheldur gildin 1,9,2,8,3,7,4,7,5,6,6
+        while( !pq.isEmpty() )
+        {
+            ;;; Núll eða fleiri fremstu gildi úr pq hafa verið
+            ;;; skrifuð í forgangsröð. Hin eru enn í pq.
+            writeln(pq.remove());
+        };
+        ;;; pq er nú tóm og búið er að skrifa allar tölurnar
+    };
+}}
+*
+"priq.mmod"
+*
+{{
+<<< = fun >(x,y);
+}}
+*
+BASIS
+;
+
+;;; Einstaklingsverkefni 10
+
+{;;;
+
+Hönnunarskjal
+=============
+
+Útflutt
+-------
+
+Notkun: q = smíða();
+Fyrir:  Ekkert.
+Eftir:  q er ný tóm biðröð.
+
+Innflutt
+--------
+
+Notkun: q.setja(x);
+Fyrir:  q er biðröð.
+Eftir:  Búið er að bæta x aftast í q.
+
+Notkun: x = q.sækja();
+Fyrir:  q er biðröð, ekki tóm.
+Eftir:  Búið er að fjarlægja gildið sem var fremst
+        í q og x inniheldur það gildi.
+
+Notkun: b = q.erTóm();
+Fyrir:  q er biðröð.
+Eftir:  b er satt þá og því aðeins að q sé tóm.
+
+;;;}
+
+;;; Smíð
+;;; ====
+
+"queue.mmod" =
+{{
+smíða =
+	obj()
+	{
+		var fremst=[], aftast=[];
+		
+		{;;;
+		
+		Fastayrðing gagna:
+		==================
+		
+		Tóm biðröð er táknuð með
+			fremst = [] og aftast = [].
+		Biðröð sem ekki er tóm og innihelur gildin
+		x1,x2,...,xN er táknuð með
+			fremst = [x1,x2,...,xN]
+		og þá vísar aftast á aftasta hlekkinn þ.a.
+			aftast = [xN]
+		
+		;;;}
+
+		msg sækja()
+		{
+			val x = head(fremst);
+			fremst = tail(fremst);
+			if( !fremst ) { aftast = [] };
+			x
+		};
+		
+		msg setja(x)
+		{
+			if( !fremst )
+			{
+				aftast = fremst = [x];
+			}
+			else
+			{
+				val tmp = [x];
+				setTail(aftast,tmp);
+				aftast = tmp;
+			}
+		};
+		
+		msg erTóm()
+		{
+			!fremst
+		};
+	};
+}};
+
+;;; Prófun
+
+{;;;
+Skrifar:
+true
+false
+1
+true
+false
+false
+1
+false
+2
+true
+;;;}
+
+"queuetest.mexe" = main in
+{{
+main =
+	fun()
+	{
+		val q = smíða();
+		writeln(q.erTóm()); ;;; true
+		q.setja(1);
+		writeln(q.erTóm()); ;;; false
+		writeln(q.sækja()); ;;; 1
+		writeln(q.erTóm()); ;;; true
+		q.setja(1);
+		writeln(q.erTóm()); ;;; false
+		q.setja(2);
+		writeln(q.erTóm()); ;;; false
+		writeln(q.sækja()); ;;; 1
+		writeln(q.erTóm()); ;;; false
+		writeln(q.sækja()); ;;; 2
+		writeln(q.erTóm()); ;;; true
+	};
+}}
+*
+"queue.mmod"
+*
+BASIS
+;
