@@ -1,0 +1,414 @@
+;;; Lausn á verkefni H9
+
+;;; Neðar í skjalinu er lausn á E9
+
+;;; Höfundur: Snorri Agnarsson
+
+;;; Þýða má þessa skrá með skipuninni
+;;;    java -jar morpho.jar --encoding utf8 -c fmal_lausn9.morpho
+
+{;;;
+
+Hönnunarskjal
+=============
+
+Útfluttar aðgerðir
+------------------
+
+Notkun: fb = nýfb();
+Fyrir:  Ekkert
+Eftir:  fb vísar á nýja tóma forgangsbiðröð sem
+        getur innihaldið hvaða gildi sem er ásamt
+		því að hvert gildi hefur samsvarandi lykil
+		þar sem allir lyklar eru sambærilegir með
+		innfluttu samanburðaraðgerðinni <<==.
+
+Notkun: b = erTóm(fb);
+Fyrir:  fb er forgangsbiðröð.
+Eftir:  b er satt þá og því aðeins að fb sé tóm.
+
+Notkun: setja(fb,l,g);
+Fyrir:  fb er forgangsbibðröð, l er gildi sem er
+        löglegur lykill fyrir fb, þ.e. gildi sem
+		er löglegt viðfang í innfluttu samanburðaraðgerðina
+		<<==.
+Eftir:	Búið er að bæta parinu (l,g) í fb þannig
+		að safn þeirra para sem fb inniheldur nú
+		er þessu einu pari stærra.
+
+Notkun: g = sækja(fb);
+Fyrir:  fb er forgangsbiðröð, ekki tóm.
+Eftir:  g er gildi sem var í fb og hafði
+		lykil l sem mátti vera á undan öllum öðrum
+		lyklum í fb.  Búið er að fjarlægja parið
+		(l,g) úr fb en að öðru leyti er fb óbreytt.
+
+Innfluttar aðgerðir
+-------------------
+
+Notkun:	b = x <<== y;
+Fyrir:	x og y eru löglegir lyklar fyrir forgangsbiðröð.
+Eftir:	b er satt þá og því aðeins að x megi vera á undan y.
+		
+;;;}
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Eftirfarandi er ein möguleg smíð, aðra smíð má sjá neðar.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+"v9a.mmod" =
+{{
+;;; Fastayrðing gagna
+;;; =================
+;;;   Forgangsbiðröð fb sem inniheldur pör (l1,g1), (l2,g2), ..., (lN,gN),
+;;;   þannig að l1 má vera á undan l2, l2 má vera á undan l3, o.s.frv.,
+;;;   er geymd sem bendir á breytu sem inniheldur lista
+;;;     [[l1$g1],[l2$g2],...,[lN$gN]].
+
+nýfb =
+	fun()
+	{
+		var x = [];
+		&x
+	};
+	
+erTóm =
+	fun(fb)
+	{
+		! *fb
+	};
+
+sækja =
+	fun(fb)
+	{
+		var g = tail(head(*fb));
+		*fb = tail(*fb);
+		g
+	};
+	
+setja =
+	fun(fb,l,g)
+	{
+		var z = *fb;
+		if( !z || l <<== head(head(z)) )
+		{
+			;;; Nýja parið má vera fremst í listanum.
+			*fb = [l$g] : z;
+			return [];
+		};
+		while( tail(z) && !(l <<== head(head(tail(z)))) )
+			;;; Listinn *fb er óbreyttur og z vísar á einhvern
+			;;; hlekk í keðjunni (listanum) þannig að sá hlekkur
+			;;; (og þar með allir hlekkir fyrir framan) hefur
+			;;; lykil sem l má ekki vera á undan.
+		{
+			z = tail(z);
+		};
+		setTail(z,[l$g]:tail(z));
+	};
+}}
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Eftirfarandi eru prófanir fyrir fyrri smíðina.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+"v9test1a1.mexe" = main in
+{{
+main =
+	fun()
+	{
+		var x = [9,1,8,2,7,3,6,4,5,1,2,3,4,5,6,7,8,9,0,9,8,7,6,5,4,3,2,1];
+		val fb = nýfb();
+		while( x )
+			;;; fb inniheldur safn para (z,z) þar sem gildin z eru
+			;;; þau gildi sem fjarlægð hafa verið úr x.  Samanlagt
+			;;; innihald fb og x er því sama og upphaflegt innihald x.
+		{
+			var g = head(x);
+			x = tail(x);
+			setja(fb,g,g);
+		};
+		while( !erTóm(fb) )
+			;;; Búið er að skrifa núll eða fleiri minnstu gildi úr
+			;;; fb, sem eru einnig minnstu gildi úr upphaflega
+			;;; listanum x. Þau gildi úr upphaflega listanum x, sem
+			;;; ekki hafa verið skrifuð, eru í fb.
+		{
+			write(sækja(fb)); write(" ");
+		};
+	};
+}}
+*
+"v9a.mmod"
+*
+{{
+<<== = fun <=(x,y);
+}}
+*
+BASIS
+;
+
+"v9test1a2.mexe" = main in
+{{
+main =
+	fun()
+	{
+		var x = [9,1,8,2,7,3,6,4,5,1,2,3,4,5,6,7,8,9,0,9,8,7,6,5,4,3,2,1];
+		val fb = nýfb();
+		while( x )
+			;;; fb inniheldur safn para (z,z) þar sem gildin z eru
+			;;; þau gildi sem fjarlægð hafa verið úr x.  Samanlagt
+			;;; innihald fb og x er því sama og upphaflegt innihald x.
+		{
+			var g = head(x);
+			x = tail(x);
+			setja(fb,g,g);
+		};
+		while( !erTóm(fb) )
+			;;; Búið er að skrifa núll eða fleiri stærstu gildi úr
+			;;; fb, sem eru einnig stærstu gildi úr upphaflega
+			;;; listanum x. Þau gildi úr upphaflega listanum x, sem
+			;;; ekki hafa verið skrifuð, eru í fb.
+		{
+			write(sækja(fb)); write(" ");
+		};
+	};
+}}
+*
+"v9a.mmod"
+*
+{{
+<<== = fun >=(x,y);
+}}
+*
+BASIS
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Eftirfarandi önnur möguleg smíð.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+"v9b.mmod" =
+{{
+;;; Fastayrðing gagna
+;;; =================
+;;;   Forgangsbiðröð fb sem inniheldur pör (l1,g1), (l2,g2), ..., (lN,gN),
+;;;   er geymd sem bendir á breytu sem inniheldur lista
+;;;     [[l1$g1],[l2$g2],...,[lN$gN]].
+
+nýfb =
+	fun()
+	{
+		var x = [];
+		&x
+	};
+	
+erTóm =
+	fun(fb)
+	{
+		! *fb
+	};
+
+sækja =
+	fun(fb)
+	{
+		var z = *fb;
+		if( !tail(z) )
+		{
+			val g = tail(head(z));
+			*fb = [];
+			return g;
+		};
+		var minSoFar = z;
+		var predecessorOfMin = [];
+		while( tail(z) )
+			;;; z vísar á einhvern hlekk í keðjunni *fb.
+			;;; minSoFar vísar einnig á einhvern hlekk í keðjunni
+			;;; og sá hlekkur inniheldur lykil sem má vera á undan
+			;;; lyklinum í hlekk z og öllum öðrum lyklum í hlekkjum
+			;;; fyrir framan þann hlekk.
+			;;; Ef minSoFar er fremsti hlekkurinn í keðjunni *fb þá
+			;;; er predecessorOfMin==[], annars vísar predecessorOfMin
+			;;; á hlekkinn sem er beint fyrir framan hlekkinn sem
+			;;; minSoFar vísar á.
+		{
+			if( head(head(tail(z))) <<== head(head(minSoFar)) )
+			{
+				predecessorOfMin = z;
+				minSoFar = tail(z);
+			};
+			z = tail(z);
+		};
+		val g = tail(head(minSoFar));
+		if( predecessorOfMin )
+		{
+			setTail(predecessorOfMin,tail(tail(predecessorOfMin)));
+		}
+		else
+		{
+			*fb = tail(minSoFar);
+		};
+		g
+	};
+	
+setja =
+	fun(fb,l,g)
+	{
+		*fb = [l$g] : *fb
+	};
+}}
+;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Eftirfarandi er prófun fyrir seinni smíðina.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+"v9test1b1.mexe" = main in
+{{
+main =
+	fun()
+	{
+		var x = [9,1,8,2,7,3,6,4,5,1,2,3,4,5,6,7,8,9,0,9,8,7,6,5,4,3,2,1];
+		val fb = nýfb();
+		while( x )
+			;;; fb inniheldur safn para (z,z) þar sem gildin z eru
+			;;; þau gildi sem fjarlægð hafa verið úr x.  Samanlagt
+			;;; innihald fb og x eru sama og upphaflegt innihald x.
+		{
+			var g = head(x);
+			x = tail(x);
+			setja(fb,g,g);
+		};
+		while( !erTóm(fb) )
+			;;; Búið er að skrifa núll eða fleiri minnstu gildi úr
+			;;; fb, sem eru einnig minnstu gildi úr upphaflega
+			;;; listanum x. Þau gildi úr upphaflega listanum x, sem
+			;;; ekki hafa verið skrifuð, eru í fb.
+		{
+			write(sækja(fb)); write(" ");
+		};
+	};
+}}
+*
+"v9b.mmod"
+*
+{{
+<<== = fun <=(x,y);
+}}
+*
+BASIS
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Eftirfarandi er hönnunarskjal fyrir E9. Smíð og prófun koma þar á eftir.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+{;;;
+Hönnunarskjal
+=============
+
+Útfluttar aðgerðir
+------------------
+
+Notkun:	s = nýrHlaði();
+Fyrir:	Ekkert
+Eftir:	s er nýr tómur hlaði
+
+Notkun:	b = erTómur(s);
+Fyrir:	s er hlaði.
+Eftir:	b er satt þá og því aðeins að s sé tómur.
+
+Notkun:	x = pop(s);
+Fyrir:	s er hlaði, ekki tómur.
+Eftir:	x er gildið sem var efst á s, það hefur verið fjarlægt af s.
+
+Notkun:	push(s,x);
+Fyrir:	s er hlaði.
+Eftir:	x hefur verið bætt ofan á s.
+
+;;;}
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Hönnun lýkur hér.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Eftirfarandi er smíðin.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+"stack.mmod" =
+{{
+;;; Fastayrðing gagna:
+;;;		Hlaði sem inniheldur gildin x1,x2,...,xN, frá toppi til botns,
+;;;		er táknaður sem bendir á breytu sem inniheldur lista
+;;;		[x1,x2,...,xN].
+
+nýrHlaði =
+	fun()
+	{
+		var x;
+		&x
+	};
+	
+erTómur =
+	fun(s)
+	{
+		! *s
+	};
+	
+push =
+	fun(s,x)
+	{
+		*s = x : *s;
+	};
+
+pop =
+	fun(s)
+	{
+		val g = head(*s);
+		*s = tail(*s);
+		g
+	};
+}}
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Eftirfarandi er prófun á hlaðaeiningunni
+;;; Prófunin skrifar eftirfarandi:
+;;;   true
+;;;   false
+;;;   1
+;;;   true
+;;;   3
+;;;   false
+;;;   2
+;;;   true
+;;; sem er í samræmi við væntingar.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+"stacktest.mexe" = main in
+{{
+main =
+	fun()
+	{
+		val s = nýrHlaði();
+		writeln(erTómur(s));
+		push(s,1);
+		writeln(erTómur(s));
+		writeln(pop(s));
+		writeln(erTómur(s));
+		push(s,2); push(s,3);
+		writeln(pop(s));
+		writeln(erTómur(s));
+		writeln(pop(s));
+		writeln(erTómur(s));
+	};
+}}
+*
+"stack.mmod"
+*
+BASIS
+;
